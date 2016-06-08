@@ -7,9 +7,19 @@ body {
   margin-top: 15px;
   margin-bottom: 15px;
   padding-top: 20px;
-  padding-bottom: 20px;
 }
 
 canvas {
   margin-top: 20px;
+}
+
+.footer {
+  padding-bottom: 20px;
+  background-color: black;
+  color: #555555;
+  text-align: center;
+}
+
+a:link, a:visited {
+  color: #555555;
 }
