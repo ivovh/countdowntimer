@@ -1,13 +1,17 @@
+"use strict";
+
+var IN_MILLISECONDS = 60 * 1000;
+
 function calculateRadius(width, height) {
   return Math.min(width, height) * 0.49;
 }
 
 function formatTime(milliseconds) {
-  var seconds = Math.round(milliseconds/1000);
+  var seconds = Math.round(milliseconds / 1000);
   var min = Math.floor(seconds / 60);
   var sec = (seconds % 60);
-  var m = min < 10 ? " "+min : min;
-  var s = sec < 10 ? "0"+sec : sec;
+  var m = min < 10 ? " " + min : min;
+  var s = sec < 10 ? "0" + sec : sec;
   return m + ":" + s;
 }
 
@@ -40,10 +44,12 @@ function drawTimer(ctx, canvas, duration, remaining) {
   ctx.restore();
 }
 
-function drawStoppedTimer() {
+function drawReadyTimer() {
   var canvas = document.getElementById("timerCanvas");
   var ctx = canvas.getContext("2d");
-  drawTimer(ctx, canvas, 1, 0);
+  var minutes = document.getElementById("minutes").value;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawTimer(ctx, canvas, minutes*IN_MILLISECONDS, minutes*IN_MILLISECONDS);
 }
 
 function playSound() {
@@ -52,10 +58,14 @@ function playSound() {
 }
 
 
+var minutesInput = document.getElementById("minutes");
 var startButton = document.getElementById("start");
 var stopButton = document.getElementById("stop");
+var resetButton = document.getElementById("reset");
 
-function animateTimer(myTimer) {
+var myTimer;
+
+function animateTimer() {
   var canvas = document.getElementById("timerCanvas");
   var ctx = canvas.getContext("2d");
 
@@ -77,22 +87,19 @@ function animateTimer(myTimer) {
   if(myTimer.isRunning){
     // schedule next animation step
     requestAnimationFrame(function() {
-      animateTimer(myTimer);
+      animateTimer();
     });
   } else if (myTimer.isCompleted){
     playSound();
     startButton.disabled = false;
     stopButton.disabled = true;
+    minutesInput.disabled = false;
   }
 }
 
 
-const IN_MILLISECONDS = 60*1000;
-
-var myTimer;
-
 function startTimer() {
-  var minutes = document.getElementById("minutes").value;
+  var minutes = minutesInput.value;
   myTimer = {
     duration: minutes*IN_MILLISECONDS,
     remaining: minutes*IN_MILLISECONDS,
@@ -103,16 +110,28 @@ function startTimer() {
   animateTimer(myTimer);
   startButton.disabled = true;
   stopButton.disabled = false;
+  minutesInput.disabled = true;
 }
 
 function stopTimer() {
   myTimer.isRunning = false;
   startButton.disabled = false;
   stopButton.disabled = true;
+  minutesInput.disabled = false;
 }
 
+function resetTimer() {
+  if(myTimer.isRunning) {
+    startTimer();
+  } else {
+    drawReadyTimer();
+  }
+}
+
+minutesInput.onchange = drawReadyTimer;
 startButton.onclick = startTimer;
 stopButton.onclick = stopTimer;
+resetButton.onclick = resetTimer;
 stopButton.disabled = true;
-drawStoppedTimer();
+drawReadyTimer();
 
