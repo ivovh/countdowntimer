@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
         integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
   <link rel="stylesheet" href="css/main.css">
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+          integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
           integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
           crossorigin="anonymous"></script>
@@ -25,9 +27,10 @@
       <label for="minutes">Set for
         <input type="number" class="form-control" id="minutes" name="minutes" min="1" value="5"
                style="width: 5em;">
-        minutes. &nbsp;
+        minutes.
       </label>
     </div>
+    &nbsp;
     <button type="button" class="btn btn-default" id="start">
       <span class="glyphicon glyphicon-play"></span> Start
     </button>
@@ -37,11 +40,26 @@
     <button type="button" class="btn btn-default" id="reset">
       <span class="glyphicon glyphicon-fast-backward"></span> Reset
     </button>
+    &nbsp;
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-default" id="sound_on_lbl">
+        <input type="radio" name="sound_options" id="sound_on" value="on" autocomplete="off" onclick="soundOn();">
+        <span class="glyphicon glyphicon-volume-up"></span>
+      </label>
+      <label class="btn btn-default active">
+        <input type="radio" name="sound_options" id="sound_off" value="off" autocomplete="off" checked>
+        <span class="glyphicon glyphicon-volume-off"></span>
+      </label>
+    </div>
   </form>
 
   <canvas class="img-responsive center-block" id="timerCanvas" width="1000px" height="1000px">
     Your browser does not support the HTML5 canvas tag.
   </canvas>
+
+  <audio id="audio" preload="auto">
+    <source src="mp3/Computer_Magic-Microsift-1901299923.mp3" type="audio/mpeg">
+  </audio>
 
   <script src="js/main.js"></script>
 </main>

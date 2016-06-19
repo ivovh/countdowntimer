@@ -49,21 +49,24 @@ function drawReadyTimer() {
   var ctx = canvas.getContext("2d");
   var minutes = document.getElementById("minutes").value;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawTimer(ctx, canvas, minutes*IN_MILLISECONDS, minutes*IN_MILLISECONDS);
-}
-
-function playSound() {
-  var audio = new Audio("mp3/Computer_Magic-Microsift-1901299923.mp3");
-  audio.play();
+  drawTimer(ctx, canvas, minutes * IN_MILLISECONDS, minutes * IN_MILLISECONDS);
 }
 
 
+
+var audio = document.getElementById("audio");
 var minutesInput = document.getElementById("minutes");
 var startButton = document.getElementById("start");
 var stopButton = document.getElementById("stop");
 var resetButton = document.getElementById("reset");
+var soundOnButton = document.getElementById("sound_on");
+var soundOnLabel = document.getElementById("sound_on_lbl");
 
 var myTimer;
+
+function playSound() {
+  audio.play();
+}
 
 function animateTimer() {
   var canvas = document.getElementById("timerCanvas");
@@ -75,7 +78,7 @@ function animateTimer() {
   // calculate new timer state
   var passed = Date.now() - myTimer.startTime;
   myTimer.remaining = myTimer.duration - passed;
-  if(myTimer.remaining <= 0) {
+  if (myTimer.remaining <= 0) {
     myTimer.isRunning = false;
     myTimer.isCompleted = true;
     myTimer.remaining = 0;
@@ -84,13 +87,13 @@ function animateTimer() {
   // draw
   drawTimer(ctx, canvas, myTimer.duration, myTimer.remaining);
 
-  if(myTimer.isRunning){
+  if (myTimer.isRunning) {
     // schedule next animation step
-    requestAnimationFrame(function() {
+    requestAnimationFrame(function () {
       animateTimer();
     });
-  } else if (myTimer.isCompleted){
-    playSound();
+  } else if (myTimer.isCompleted) {
+    if (soundOnButton.checked === true) { playSound(); }
     startButton.disabled = false;
     stopButton.disabled = true;
     minutesInput.disabled = false;
@@ -101,8 +104,8 @@ function animateTimer() {
 function startTimer() {
   var minutes = minutesInput.value;
   myTimer = {
-    duration: minutes*IN_MILLISECONDS,
-    remaining: minutes*IN_MILLISECONDS,
+    duration: minutes * IN_MILLISECONDS,
+    remaining: minutes * IN_MILLISECONDS,
     startTime: Date.now(),
     isRunning: true,
     isCompleted: false
@@ -121,17 +124,24 @@ function stopTimer() {
 }
 
 function resetTimer() {
-  if(myTimer.isRunning) {
+  if (myTimer.isRunning) {
     startTimer();
   } else {
     drawReadyTimer();
   }
 }
 
+function soundOn() {
+  playSound(); // iOS: will load the sound so that it can play later when timer expires
+}
+
+
 minutesInput.onchange = drawReadyTimer;
 startButton.onclick = startTimer;
 stopButton.onclick = stopTimer;
 resetButton.onclick = resetTimer;
+soundOnLabel.onclick = soundOn;
+
 stopButton.disabled = true;
 drawReadyTimer();
 
