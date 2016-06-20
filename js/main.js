@@ -105,6 +105,7 @@ function animateTimer() {
 
 function startTimer() {
   var minutes = minutesInput.value;
+  Cookies.set('minutes', minutes);
   myTimer = {
     duration: minutes * IN_MILLISECONDS,
     remaining: minutes * IN_MILLISECONDS,
@@ -155,6 +156,12 @@ function zoomIn() {
   }
 }
 
+function setMinutesFromCookie() {
+  var minutes = Cookies.get('minutes');
+  if (minutes !== undefined) {
+    minutesInput.value = minutes;
+  }
+}
 
 minutesInput.onchange = drawReadyTimer;
 startButton.onclick = startTimer;
@@ -163,6 +170,8 @@ resetButton.onclick = resetTimer;
 soundOnLabel.onclick = soundOn;
 zoomOutButton.onclick = zoomOut;
 zoomInButton.onclick = zoomIn;
+
+setMinutesFromCookie();
 
 stopButton.disabled = true;
 drawReadyTimer();
