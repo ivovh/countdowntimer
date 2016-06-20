@@ -9,19 +9,20 @@
 
   <link rel="shortcut icon" type="image/png" href="favicon.png"/>
 
-  <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+        integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
   <link rel="stylesheet" href="css/main.css">
-  <script src="lib/jquery/dist/jquery.min.js"></script>
-  <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="lib/js-cookie/src/js.cookie.js"></script>
+
+  <script data-main="js/main" src="lib/requirejs/require.js"></script>
 </head>
 <body>
 <main class="container">
   <form class="form-inline text-center">
     <div class="form-group">
       <label for="minutes">Set for
-        <input type="number" class="form-control" id="minutes" name="minutes" min="1" value="5"
+        <input type="number" class="form-control" id="minutes" name="minutes" min="1"
                style="width: 5em;">
         min.
       </label>
@@ -61,8 +62,6 @@
   <audio id="audio" preload="auto">
     <source src="mp3/Computer_Magic-Microsift-1901299923.mp3" type="audio/mpeg">
   </audio>
-
-  <script src="js/main.js"></script>
 </main>
 <footer class="container footer">
   <a href="https://github.com/crispab/countdowntimer"><strong>CountdownTimer</strong></a>
