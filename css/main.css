@@ -25,3 +25,7 @@ canvas {
 a:link, a:visited {
   color: #555555;
 }
+
+.larger-text {
+  font-size: large;
+}

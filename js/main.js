@@ -61,6 +61,8 @@ var stopButton = document.getElementById("stop");
 var resetButton = document.getElementById("reset");
 var soundOnButton = document.getElementById("sound_on");
 var soundOnLabel = document.getElementById("sound_on_lbl");
+var zoomOutButton = document.getElementById("zoom_out");
+var zoomInButton = document.getElementById("zoom_in");
 
 var myTimer;
 
@@ -135,12 +137,32 @@ function soundOn() {
   playSound(); // iOS: will load the sound so that it can play later when timer expires
 }
 
+function zoomOut() {
+  var canvas = document.getElementById("timerCanvas");
+  canvas.height = canvas.height - 50;
+  canvas.width = canvas.width - 50;
+  if (myTimer === undefined || !myTimer.isRunning) {
+    drawReadyTimer();
+  }
+}
+
+function zoomIn() {
+  var canvas = document.getElementById("timerCanvas");
+  canvas.height = canvas.height + 50;
+  canvas.width = canvas.width + 50;
+  if (myTimer === undefined || !myTimer.isRunning) {
+    drawReadyTimer();
+  }
+}
+
 
 minutesInput.onchange = drawReadyTimer;
 startButton.onclick = startTimer;
 stopButton.onclick = stopTimer;
 resetButton.onclick = resetTimer;
 soundOnLabel.onclick = soundOn;
+zoomOutButton.onclick = zoomOut;
+zoomInButton.onclick = zoomIn;
 
 stopButton.disabled = true;
 drawReadyTimer();
