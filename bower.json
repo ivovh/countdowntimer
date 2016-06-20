@@ -1,0 +1,22 @@
+{
+  "name": "countdowntimer",
+  "homepage": "http://www.countdowntimer.se",
+  "authors": [
+    "Jan Grape <jan.grape@crisp.se>"
+  ],
+  "description": "A visual timer that counts down",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "js-cookie": "^2.1.2",
+    "bootstrap": "^3.3.6"
+  }
+}
