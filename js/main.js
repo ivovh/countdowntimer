@@ -14,8 +14,7 @@ requirejs.config({
 
 require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
 
-  // DOM ready
-  $(function () {
+  $(document).ready(function () {
 
     var IN_MILLISECONDS = 60 * 1000;
 
