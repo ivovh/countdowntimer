@@ -106,9 +106,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
 
       if (myTimer.isRunning) {
         // schedule next animation step
-        requestAnimationFrame(function () {
-          animateTimer();
-        });
+        requestAnimationFrame(animateTimer);
       } else if (myTimer.isCompleted) {
         if (soundOnButton.checked === true) {
           playSound();
