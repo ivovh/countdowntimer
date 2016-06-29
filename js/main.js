@@ -89,11 +89,11 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
     function playExpiredSound() {
-      playSound("mp3/Computer_Magic-Microsift-1901299923.mp3");
+      playSound("mp3/expired.mp3");
     }
 
     function playStartSound() {
-      playSound("mp3/Computer_Magic-Microsift-1901299923_final_note.mp3");
+      playSound("mp3/start.mp3");
     }
 
     function animateTimer() {
