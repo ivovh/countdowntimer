@@ -70,6 +70,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
 
 
     var audio = document.getElementById("audio");
+    var mp3 = document.getElementById("mp3");
     var minutesInput = document.getElementById("minutes");
     var startButton = document.getElementById("start");
     var stopButton = document.getElementById("stop");
@@ -81,8 +82,18 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
 
     var myTimer;
 
-    function playSound() {
+    function playSound(source) {
+      mp3.src=source;
+      audio.load();
       audio.play();
+    }
+
+    function playExpiredSound() {
+      playSound("mp3/Computer_Magic-Microsift-1901299923.mp3");
+    }
+
+    function playStartSound() {
+      playSound("mp3/Computer_Magic-Microsift-1901299923_final_note.mp3");
     }
 
     function animateTimer() {
@@ -109,7 +120,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
         requestAnimationFrame(animateTimer);
       } else if (myTimer.isCompleted) {
         if (soundOnButton.checked === true) {
-          playSound();
+          playExpiredSound();
         }
         startButton.disabled = false;
         stopButton.disabled = true;
@@ -119,6 +130,12 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
 
 
     function startTimer() {
+      startButton.disabled = true;
+      stopButton.disabled = false;
+      minutesInput.disabled = true;
+
+      playStartSound();
+
       var minutes = minutesInput.value;
       Cookies.set('minutes', minutes);
       myTimer = {
@@ -129,9 +146,6 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
         isCompleted: false
       };
       animateTimer(myTimer);
-      startButton.disabled = true;
-      stopButton.disabled = false;
-      minutesInput.disabled = true;
     }
 
     function stopTimer() {
@@ -150,7 +164,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
     function soundOn() {
-      playSound(); // iOS: will load the sound so that it can play later when timer expires
+      playStartSound();
     }
 
     function zoomOut() {
