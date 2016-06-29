@@ -134,7 +134,9 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
       stopButton.disabled = false;
       minutesInput.disabled = true;
 
-      playStartSound();
+      if (soundOnButton.checked === true) {
+        playStartSound();
+      }
 
       var minutes = minutesInput.value;
       Cookies.set('minutes', minutes);
