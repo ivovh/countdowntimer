@@ -134,12 +134,13 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
       stopButton.disabled = false;
       minutesInput.disabled = true;
 
-      if (soundOnButton.checked === true) {
+      if (soundOnButton.checked) {
         playStartSound();
       }
 
       var minutes = minutesInput.value;
       Cookies.set('minutes', minutes);
+      Cookies.set('soundOn', soundOnButton.checked);
       myTimer = {
         duration: minutes * IN_MILLISECONDS,
         remaining: minutes * IN_MILLISECONDS,
@@ -163,10 +164,6 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
       } else {
         drawReadyTimer();
       }
-    }
-
-    function soundOn() {
-      playStartSound();
     }
 
     function zoomOut() {
@@ -196,15 +193,33 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
       }
     }
 
+    function toggleSoundOn(soundOn) {
+      if(soundOn === true) {
+        $('#sound_on_lbl').button('toggle');
+      } else {
+        $('#sound_off_lbl').button('toggle');
+      }
+    }
+
+    function setDefaultSoundOnOff() {
+      var soundOn = JSON.parse(Cookies.get('soundOn'));
+      if (soundOn !== undefined) {
+        toggleSoundOn(soundOn);
+      } else {
+        toggleSoundOn(true);
+      }
+    }
+
     minutesInput.onchange = drawReadyTimer;
     startButton.onclick = startTimer;
     stopButton.onclick = stopTimer;
     resetButton.onclick = resetTimer;
-    soundOnLabel.onclick = soundOn;
+    soundOnLabel.onclick = playStartSound;
     zoomOutButton.onclick = zoomOut;
     zoomInButton.onclick = zoomIn;
 
     setDefaultMinutes();
+    setDefaultSoundOnOff();
 
     stopButton.disabled = true;
     drawReadyTimer();
