@@ -17,6 +17,18 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
   $(document).ready(function () {
 
     var IN_MILLISECONDS = 60 * 1000;
+    var canvas = document.getElementById("timerCanvas");
+    var audio = document.getElementById("audio");
+    var mp3 = document.getElementById("mp3");
+    var minutesInput = document.getElementById("minutes");
+    var startButton = document.getElementById("start");
+    var stopButton = document.getElementById("stop");
+    var resetButton = document.getElementById("reset");
+    var soundOnButton = document.getElementById("sound_on");
+    var soundOnLabel = document.getElementById("sound_on_lbl");
+    var zoomOutButton = document.getElementById("zoom_out");
+    var zoomInButton = document.getElementById("zoom_in");
+    var myTimer;
 
     function calculateRadius(width, height) {
       return Math.min(width, height) * 0.49;
@@ -61,26 +73,11 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
     function drawReadyTimer() {
-      var canvas = document.getElementById("timerCanvas");
       var ctx = canvas.getContext("2d");
       var minutes = document.getElementById("minutes").value;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawTimer(ctx, canvas, minutes * IN_MILLISECONDS, minutes * IN_MILLISECONDS);
     }
-
-
-    var audio = document.getElementById("audio");
-    var mp3 = document.getElementById("mp3");
-    var minutesInput = document.getElementById("minutes");
-    var startButton = document.getElementById("start");
-    var stopButton = document.getElementById("stop");
-    var resetButton = document.getElementById("reset");
-    var soundOnButton = document.getElementById("sound_on");
-    var soundOnLabel = document.getElementById("sound_on_lbl");
-    var zoomOutButton = document.getElementById("zoom_out");
-    var zoomInButton = document.getElementById("zoom_in");
-
-    var myTimer;
 
     function playSound(source) {
       mp3.src=source;
@@ -97,7 +94,6 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
     function animateTimer() {
-      var canvas = document.getElementById("timerCanvas");
       var ctx = canvas.getContext("2d");
 
       // clear canvas
@@ -141,6 +137,8 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
       var minutes = minutesInput.value;
       Cookies.set('minutes', minutes);
       Cookies.set('soundOn', soundOnButton.checked);
+      Cookies.set('size', canvas.height);
+
       myTimer = {
         duration: minutes * IN_MILLISECONDS,
         remaining: minutes * IN_MILLISECONDS,
@@ -167,7 +165,6 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
     function zoomOut() {
-      var canvas = document.getElementById("timerCanvas");
       canvas.height = canvas.height - 50;
       canvas.width = canvas.width - 50;
       if (myTimer === undefined || !myTimer.isRunning) {
@@ -176,7 +173,6 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
     function zoomIn() {
-      var canvas = document.getElementById("timerCanvas");
       canvas.height = canvas.height + 50;
       canvas.width = canvas.width + 50;
       if (myTimer === undefined || !myTimer.isRunning) {
@@ -202,11 +198,19 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
     function setDefaultSoundOnOff() {
-      var soundOn = JSON.parse(Cookies.get('soundOn'));
+      var soundOn = Cookies.get('soundOn');
       if (soundOn !== undefined) {
-        toggleSoundOn(soundOn);
+        toggleSoundOn(JSON.parse(soundOn));
       } else {
         toggleSoundOn(true);
+      }
+    }
+
+    function setDefaultCanvasSize() {
+      var size = Cookies.get('size');
+      if (size !== undefined) {
+        canvas.height = size;
+        canvas.width = size;
       }
     }
 
@@ -220,6 +224,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
 
     setDefaultMinutes();
     setDefaultSoundOnOff();
+    setDefaultCanvasSize();
 
     stopButton.disabled = true;
     drawReadyTimer();
