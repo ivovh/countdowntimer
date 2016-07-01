@@ -28,7 +28,13 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     var soundOnLabel = document.getElementById("sound_on_lbl");
     var zoomOutButton = document.getElementById("zoom_out");
     var zoomInButton = document.getElementById("zoom_in");
-    var myTimer;
+    var myTimer = {
+      duration: 0,
+      remaining: 0,
+      startTime: Date.now(),
+      isRunning: false,
+      isCompleted: true
+    };
 
     function calculateRadius(width, height) {
       return Math.min(width, height) * 0.49;
@@ -80,7 +86,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
     function playSound(source) {
-      mp3.src=source;
+      mp3.src = source;
       audio.load();
       audio.play();
     }
@@ -124,6 +130,26 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
       }
     }
 
+    function unPauseTimer() {
+      myTimer.isRunning = true;
+      myTimer.isCompleted = false;
+      myTimer.startTime = Date.now() - (myTimer.duration - myTimer.remaining);
+      animateTimer(myTimer);
+    }
+
+    function startTimerFromScratch() {
+      var minutes = minutesInput.value;
+      Cookies.set('minutes', minutes);
+      Cookies.set('soundOn', soundOnButton.checked);
+      Cookies.set('size', canvas.height);
+
+      myTimer.duration = minutes * IN_MILLISECONDS;
+      myTimer.remaining = myTimer.duration;
+      myTimer.startTime = Date.now();
+      myTimer.isRunning = true;
+      myTimer.isCompleted = false;
+      animateTimer(myTimer);
+    }
 
     function startTimer() {
       startButton.disabled = true;
@@ -134,23 +160,16 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
         playStartSound();
       }
 
-      var minutes = minutesInput.value;
-      Cookies.set('minutes', minutes);
-      Cookies.set('soundOn', soundOnButton.checked);
-      Cookies.set('size', canvas.height);
-
-      myTimer = {
-        duration: minutes * IN_MILLISECONDS,
-        remaining: minutes * IN_MILLISECONDS,
-        startTime: Date.now(),
-        isRunning: true,
-        isCompleted: false
-      };
-      animateTimer(myTimer);
+      if (myTimer.isCompleted) {
+        startTimerFromScratch();
+      } else {
+        unPauseTimer();
+      }
     }
 
     function stopTimer() {
       myTimer.isRunning = false;
+
       startButton.disabled = false;
       stopButton.disabled = true;
       minutesInput.disabled = false;
@@ -158,8 +177,17 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
 
     function resetTimer() {
       if (myTimer.isRunning) {
-        startTimer();
+        if (soundOnButton.checked) {
+          playStartSound();
+        }
+        var minutes = minutesInput.value;
+        myTimer.duration = minutes * IN_MILLISECONDS;
+        myTimer.remaining = minutes * IN_MILLISECONDS;
+        myTimer.startTime = Date.now();
+        myTimer.isCompleted = false;
+        animateTimer(myTimer);
       } else {
+        myTimer.isCompleted = true;
         drawReadyTimer();
       }
     }
@@ -190,7 +218,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
     function toggleSoundOn(soundOn) {
-      if(soundOn === true) {
+      if (soundOn === true) {
         $('#sound_on_lbl').button('toggle');
       } else {
         $('#sound_off_lbl').button('toggle');
