@@ -1,5 +1,5 @@
 body {
-  background-color: black;
+  background-color: #0f4c61;
 }
 
 .container {
@@ -17,13 +17,13 @@ canvas {
 
 .footer {
   padding-bottom: 20px;
-  background-color: black;
-  color: #555555;
+  background-color: #0f4c61;
+  color: #7e7e7e;
   text-align: center;
 }
 
 a:link, a:visited {
-  color: #555555;
+  color: #7e7e7e;
 }
 
 .larger-text {

@@ -17,6 +17,9 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
   $(document).ready(function () {
 
     var IN_MILLISECONDS = 60 * 1000;
+    var FILLSTYLE_TIMER = "#EE3C0C";
+    var FILLSTYLE_INVERTED = "#0f4c61";
+
     var canvas = document.getElementById("timerCanvas");
     var audio = document.getElementById("audio");
     var mp3 = document.getElementById("mp3");
@@ -28,6 +31,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     var soundOnLabel = document.getElementById("sound_on_lbl");
     var zoomOutButton = document.getElementById("zoom_out");
     var zoomInButton = document.getElementById("zoom_in");
+
     var myTimer = {
       duration: 0,
       remaining: 0,
@@ -50,13 +54,13 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     }
 
 
-    function drawTimer(ctx, canvas, duration, remaining) {
+    function drawTimer(ctx, canvas, duration, remaining, fillstyle) {
       // save canvas state
       ctx.save();
 
       // draw the pie
       var radius = calculateRadius(canvas.width, canvas.height);
-      ctx.fillStyle = "#CC0000";
+      ctx.fillStyle = fillstyle;
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(-90 * Math.PI / 180);
       ctx.beginPath();
@@ -82,7 +86,37 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
       var ctx = canvas.getContext("2d");
       var minutes = document.getElementById("minutes").value;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawTimer(ctx, canvas, minutes * IN_MILLISECONDS, minutes * IN_MILLISECONDS);
+      drawTimer(ctx, canvas, minutes * IN_MILLISECONDS, minutes * IN_MILLISECONDS, FILLSTYLE_TIMER);
+    }
+
+    function drawExpiredTimer(fillstyle) {
+      var ctx = canvas.getContext("2d");
+      var minutes = document.getElementById("minutes").value;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawTimer(ctx, canvas, minutes * IN_MILLISECONDS, 0, fillstyle);
+    }
+
+    function isOdd(num) { return num % 2;}
+
+    function flashTimer(n) {
+      if(isOdd(n)) {
+        drawExpiredTimer(FILLSTYLE_TIMER);
+      } else {
+        drawExpiredTimer(FILLSTYLE_INVERTED);
+      }
+    }
+
+    // from: https://stackoverflow.com/a/2956980
+    function setIntervalX(callback, delay, repetitions) {
+      var n = 0;
+      var intervalID = window.setInterval(function () {
+
+        callback(n);
+
+        if (++n === repetitions) {
+          window.clearInterval(intervalID);
+        }
+      }, delay);
     }
 
     function playSound(source) {
@@ -115,7 +149,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
       }
 
       // draw
-      drawTimer(ctx, canvas, myTimer.duration, myTimer.remaining);
+      drawTimer(ctx, canvas, myTimer.duration, myTimer.remaining, FILLSTYLE_TIMER);
 
       if (myTimer.isRunning) {
         // schedule next animation step
@@ -127,6 +161,7 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
         startButton.disabled = false;
         stopButton.disabled = true;
         minutesInput.disabled = false;
+        setIntervalX(flashTimer, 200, 10);
       }
     }
 
