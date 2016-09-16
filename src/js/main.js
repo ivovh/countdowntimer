@@ -7,23 +7,23 @@ import * as Cookies from "js-cookie";
 
 $(document).ready(function () {
 
-  var IN_MILLISECONDS = 60 * 1000;
-  var FILLSTYLE_TIMER = "#EE3C0C";
-  var FILLSTYLE_INVERTED = "#0f4c61";
+  const IN_MILLISECONDS = 60 * 1000;
+  const FILLSTYLE_TIMER = "#EE3C0C";
+  const FILLSTYLE_INVERTED = "#0f4c61";
 
-  var canvas = document.getElementById("timerCanvas");
-  var audio = document.getElementById("audio");
-  var mp3 = document.getElementById("mp3");
-  var minutesInput = document.getElementById("minutes");
-  var startButton = document.getElementById("start");
-  var stopButton = document.getElementById("stop");
-  var resetButton = document.getElementById("reset");
-  var soundOnButton = document.getElementById("sound_on");
-  var soundOnLabel = document.getElementById("sound_on_lbl");
-  var zoomOutButton = document.getElementById("zoom_out");
-  var zoomInButton = document.getElementById("zoom_in");
+  const canvas = document.getElementById("timerCanvas");
+  const audio = document.getElementById("audio");
+  const mp3 = document.getElementById("mp3");
+  const minutesInput = document.getElementById("minutes");
+  const startButton = document.getElementById("start");
+  const stopButton = document.getElementById("stop");
+  const resetButton = document.getElementById("reset");
+  const soundOnButton = document.getElementById("sound_on");
+  const soundOnLabel = document.getElementById("sound_on_lbl");
+  const zoomOutButton = document.getElementById("zoom_out");
+  const zoomInButton = document.getElementById("zoom_in");
 
-  var myTimer = {
+  const myTimer = {
     duration: 0,
     remaining: 0,
     startTime: Date.now(),
@@ -36,11 +36,11 @@ $(document).ready(function () {
   }
 
   function formatTime(milliseconds) {
-    var seconds = Math.round(milliseconds / 1000);
-    var min = Math.floor(seconds / 60);
-    var sec = (seconds % 60);
-    var m = min < 10 ? " " + min : min;
-    var s = sec < 10 ? "0" + sec : sec;
+    const seconds = Math.round(milliseconds / 1000);
+    const min = Math.floor(seconds / 60);
+    const sec = (seconds % 60);
+    const m = min < 10 ? " " + min : min;
+    const s = sec < 10 ? "0" + sec : sec;
     return m + ":" + s;
   }
 
@@ -50,7 +50,7 @@ $(document).ready(function () {
     ctx.save();
 
     // draw the pie
-    var radius = calculateRadius(canvas.width, canvas.height);
+    const radius = calculateRadius(canvas.width, canvas.height);
     ctx.fillStyle = fillstyle;
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate(-90 * Math.PI / 180);
@@ -74,15 +74,15 @@ $(document).ready(function () {
   }
 
   function drawReadyTimer() {
-    var ctx = canvas.getContext("2d");
-    var minutes = document.getElementById("minutes").value;
+    const ctx = canvas.getContext("2d");
+    const minutes = document.getElementById("minutes").value;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawTimer(ctx, canvas, minutes * IN_MILLISECONDS, minutes * IN_MILLISECONDS, FILLSTYLE_TIMER);
   }
 
   function drawExpiredTimer(fillstyle) {
-    var ctx = canvas.getContext("2d");
-    var minutes = document.getElementById("minutes").value;
+    const ctx = canvas.getContext("2d");
+    const minutes = document.getElementById("minutes").value;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawTimer(ctx, canvas, minutes * IN_MILLISECONDS, 0, fillstyle);
   }
@@ -101,8 +101,8 @@ $(document).ready(function () {
 
   // from: https://stackoverflow.com/a/2956980
   function setIntervalX(callback, delay, repetitions) {
-    var n = 0;
-    var intervalID = window.setInterval(function () {
+    let n = 0;
+    const intervalID = window.setInterval(function () {
 
       callback(n);
 
@@ -127,13 +127,13 @@ $(document).ready(function () {
   }
 
   function animateTimer() {
-    var ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
 
     // clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // calculate new timer state
-    var passed = Date.now() - myTimer.startTime;
+    const passed = Date.now() - myTimer.startTime;
     myTimer.remaining = myTimer.duration - passed;
     if (myTimer.remaining <= 0) {
       myTimer.isRunning = false;
@@ -166,7 +166,7 @@ $(document).ready(function () {
   }
 
   function startTimerFromScratch() {
-    var minutes = minutesInput.value;
+    const minutes = minutesInput.value;
     Cookies.set('minutes', minutes);
     Cookies.set('soundOn', soundOnButton.checked);
     Cookies.set('size', canvas.height);
@@ -208,7 +208,7 @@ $(document).ready(function () {
       if (soundOnButton.checked) {
         playStartSound();
       }
-      var minutes = minutesInput.value;
+      const minutes = minutesInput.value;
       myTimer.duration = minutes * IN_MILLISECONDS;
       myTimer.remaining = minutes * IN_MILLISECONDS;
       myTimer.startTime = Date.now();
@@ -237,7 +237,7 @@ $(document).ready(function () {
   }
 
   function setDefaultMinutes() {
-    var minutes = Cookies.get('minutes');
+    const minutes = Cookies.get('minutes');
     if (minutes !== undefined) {
       minutesInput.value = minutes;
     } else {
@@ -254,7 +254,7 @@ $(document).ready(function () {
   }
 
   function setDefaultSoundOnOff() {
-    var soundOn = Cookies.get('soundOn');
+    const soundOn = Cookies.get('soundOn');
     if (soundOn !== undefined) {
       toggleSoundOn(JSON.parse(soundOn));
     } else {
@@ -263,7 +263,7 @@ $(document).ready(function () {
   }
 
   function setDefaultCanvasSize() {
-    var size = Cookies.get('size');
+    const size = Cookies.get('size');
     if (size !== undefined) {
       canvas.height = size;
       canvas.width = size;
