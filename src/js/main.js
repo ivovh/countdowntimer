@@ -1,18 +1,15 @@
 "use strict";
 
-requirejs.config({
-  baseUrl: 'lib',
-  paths: {
-    "jquery": "//code.jquery.com/jquery-2.2.4.min",
-    "bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min",
-    "js-cookie": "js-cookie/src/js.cookie"
-  },
-  shim: {
-    "bootstrap": {"deps": ['jquery']}
-  }
-});
+import $ from 'jquery';
+import Bootstrap from 'bootstrap';
+import * as Cookies from "js-cookie";
 
-require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
+const test=()=>{
+  console.log("My first ARROW function");
+};
+
+test();
+
 
   $(document).ready(function () {
 
@@ -293,4 +290,3 @@ require(["js-cookie", "jquery", "bootstrap"], function (Cookies, $) {
     drawReadyTimer();
 
   });
-});
