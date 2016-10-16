@@ -12,8 +12,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "rm -rf public/* && mkdir -p public && cp -r src/* public && webpack",
-    "build": "rm -rf public/* && mkdir -p public && cp -r src/* public && webpack"
+    "postinstall": "scripts/postinstall.sh",
+    "build": "scripts/postinstall.sh"
   },
   "repository": {
     "type": "git",
