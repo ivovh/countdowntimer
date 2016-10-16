@@ -1,13 +1,15 @@
 module.exports = {
-  entry: "./src/js/main.js",
+  entry: "./src/js/client.js",
   output: {
-    path: __dirname + "/build/js",
-    filename: "main.js"
+    path: __dirname + "/public/js",
+    filename: "client.js"
   },
   module: {
-    loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
-    ]
+    loaders: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: "babel-loader"
+    }]
   },
   resolve: {
     alias: {
