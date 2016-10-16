@@ -12,8 +12,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf public/* && mkdir -p public && cp -r src/* public && node_modules/.bin/webpack",
-    "postinstall": "rm -rf public/* && mkdir -p public && cp -r src/* public && webpack"
+    "build": "rm -rf public/* && mkdir -p public && cp -r src/* public && webpack"
   },
   "repository": {
     "type": "git",
