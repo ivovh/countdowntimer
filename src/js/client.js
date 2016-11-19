@@ -3,6 +3,7 @@
 import $ from 'jquery';
 import Bootstrap from 'bootstrap';
 import * as Cookies from "js-cookie";
+import NoSleep from "nosleep";
 
 
 $(document).ready(function () {
@@ -22,6 +23,9 @@ $(document).ready(function () {
   const soundOnLabel = document.getElementById("sound_on_lbl");
   const zoomOutButton = document.getElementById("zoom_out");
   const zoomInButton = document.getElementById("zoom_in");
+
+  const noSleep = new NoSleep();
+
 
   const myTimer = {
     duration: 0,
@@ -126,13 +130,25 @@ $(document).ready(function () {
     playSound("mp3/start.mp3");
   }
 
-  function animateTimer() {
-    const ctx = canvas.getContext("2d");
+  function preventScreenFromLocking() {
+    noSleep.enable();
+  }
 
-    // clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  function allowScreenLock() {
+    noSleep.disable();
+  }
 
-    // calculate new timer state
+  function playSoundAndFlash() {
+    if (soundOnButton.checked === true) {
+      playExpiredSound();
+    }
+    startButton.disabled = false;
+    stopButton.disabled = true;
+    minutesInput.disabled = false;
+    setIntervalX(flashTimer, 200, 10);
+  }
+
+  function calculateNewTimerState() {
     const passed = Date.now() - myTimer.startTime;
     myTimer.remaining = myTimer.duration - passed;
     if (myTimer.remaining <= 0) {
@@ -140,21 +156,23 @@ $(document).ready(function () {
       myTimer.isCompleted = true;
       myTimer.remaining = 0;
     }
+  }
 
-    // draw
+  function animateTimer() {
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    calculateNewTimerState();
+
     drawTimer(ctx, canvas, myTimer.duration, myTimer.remaining, FILLSTYLE_TIMER);
 
     if (myTimer.isRunning) {
-      // schedule next animation step
       requestAnimationFrame(animateTimer);
-    } else if (myTimer.isCompleted) {
-      if (soundOnButton.checked === true) {
-        playExpiredSound();
+    } else {
+      allowScreenLock();
+      if (myTimer.isCompleted) {
+        playSoundAndFlash();
       }
-      startButton.disabled = false;
-      stopButton.disabled = true;
-      minutesInput.disabled = false;
-      setIntervalX(flashTimer, 200, 10);
     }
   }
 
@@ -162,7 +180,7 @@ $(document).ready(function () {
     myTimer.isRunning = true;
     myTimer.isCompleted = false;
     myTimer.startTime = Date.now() - (myTimer.duration - myTimer.remaining);
-    animateTimer(myTimer);
+    animateTimer();
   }
 
   function startTimerFromScratch() {
@@ -176,7 +194,7 @@ $(document).ready(function () {
     myTimer.startTime = Date.now();
     myTimer.isRunning = true;
     myTimer.isCompleted = false;
-    animateTimer(myTimer);
+    animateTimer();
   }
 
   function startTimer() {
@@ -213,7 +231,7 @@ $(document).ready(function () {
       myTimer.remaining = minutes * IN_MILLISECONDS;
       myTimer.startTime = Date.now();
       myTimer.isCompleted = false;
-      animateTimer(myTimer);
+      animateTimer();
     } else {
       myTimer.isCompleted = true;
       drawReadyTimer();
@@ -270,6 +288,10 @@ $(document).ready(function () {
     }
   }
 
+  function enableMobileScreenLockPrevention() {
+    startButton.addEventListener('click', preventScreenFromLocking, false);
+  }
+
   minutesInput.onchange = drawReadyTimer;
   startButton.onclick = startTimer;
   stopButton.onclick = stopTimer;
@@ -281,6 +303,8 @@ $(document).ready(function () {
   setDefaultMinutes();
   setDefaultSoundOnOff();
   setDefaultCanvasSize();
+
+  enableMobileScreenLockPrevention();
 
   stopButton.disabled = true;
   drawReadyTimer();
