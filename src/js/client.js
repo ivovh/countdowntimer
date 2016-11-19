@@ -185,9 +185,9 @@ $(document).ready(function () {
 
   function startTimerFromScratch() {
     const minutes = minutesInput.value;
-    Cookies.set('minutes', minutes);
-    Cookies.set('soundOn', soundOnButton.checked);
-    Cookies.set('size', canvas.height);
+    Cookies.set('minutes', minutes, {expires: 365});
+    Cookies.set('soundOn', soundOnButton.checked, {expires: 365});
+    Cookies.set('size', canvas.height, {expires: 365});
 
     myTimer.duration = minutes * IN_MILLISECONDS;
     myTimer.remaining = myTimer.duration;
