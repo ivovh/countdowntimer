@@ -1,9 +1,15 @@
 CACHE MANIFEST
-# Last updated 2016-10-16
+# Last updated 2016-12-12
 
 CACHE:
+css/main.css
+img/circle-background.png
+img/crisp-logo.png
+js/client.js
 mp3/expired.mp3
 mp3/start.mp3
+favicon.png
+index.html
 
 NETWORK:
 *
