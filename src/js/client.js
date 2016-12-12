@@ -1,7 +1,7 @@
 "use strict";
 
-import $ from 'jquery';
-import Bootstrap from 'bootstrap';
+import $ from "jquery";
+import Bootstrap from "bootstrap";
 import * as Cookies from "js-cookie";
 import NoSleep from "nosleep";
 
@@ -185,9 +185,9 @@ $(document).ready(function () {
 
   function startTimerFromScratch() {
     const minutes = minutesInput.value;
-    Cookies.set('minutes', minutes, {expires: 365});
-    Cookies.set('soundOn', soundOnButton.checked, {expires: 365});
-    Cookies.set('size', canvas.height, {expires: 365});
+    Cookies.set("minutes", minutes, {expires: 365});
+    Cookies.set("soundOn", soundOnButton.checked, {expires: 365});
+    Cookies.set("size", canvas.height, {expires: 365});
 
     myTimer.duration = minutes * IN_MILLISECONDS;
     myTimer.remaining = myTimer.duration;
@@ -255,7 +255,7 @@ $(document).ready(function () {
   }
 
   function setDefaultMinutes() {
-    const minutes = Cookies.get('minutes');
+    const minutes = Cookies.get("minutes");
     if (minutes !== undefined) {
       minutesInput.value = minutes;
     } else {
@@ -265,14 +265,14 @@ $(document).ready(function () {
 
   function toggleSoundOn(soundOn) {
     if (soundOn === true) {
-      $('#sound_on_lbl').button('toggle');
+      $("#sound_on_lbl").button("toggle");
     } else {
-      $('#sound_off_lbl').button('toggle');
+      $("#sound_off_lbl").button("toggle");
     }
   }
 
   function setDefaultSoundOnOff() {
-    const soundOn = Cookies.get('soundOn');
+    const soundOn = Cookies.get("soundOn");
     if (soundOn !== undefined) {
       toggleSoundOn(JSON.parse(soundOn));
     } else {
@@ -281,7 +281,7 @@ $(document).ready(function () {
   }
 
   function setDefaultCanvasSize() {
-    const size = Cookies.get('size');
+    const size = Cookies.get("size");
     if (size !== undefined) {
       canvas.height = size;
       canvas.width = size;
@@ -289,7 +289,7 @@ $(document).ready(function () {
   }
 
   function enableMobileScreenLockPrevention() {
-    startButton.addEventListener('click', preventScreenFromLocking, false);
+    startButton.addEventListener("click", preventScreenFromLocking, false);
   }
 
   minutesInput.onchange = drawReadyTimer;
