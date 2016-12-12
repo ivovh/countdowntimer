@@ -23,6 +23,7 @@ $(document).ready(function () {
   const soundOnLabel = document.getElementById("sound_on_lbl");
   const zoomOutButton = document.getElementById("zoom_out");
   const zoomInButton = document.getElementById("zoom_in");
+  const inputForm = document.getElementById("input_form");
 
   const noSleep = new NoSleep();
 
@@ -292,6 +293,11 @@ $(document).ready(function () {
     startButton.addEventListener("click", preventScreenFromLocking, false);
   }
 
+  function startTimerWithoutSubmit() {
+    startTimer();
+    return false;
+  }
+
   minutesInput.onchange = drawReadyTimer;
   startButton.onclick = startTimer;
   stopButton.onclick = stopTimer;
@@ -299,6 +305,7 @@ $(document).ready(function () {
   soundOnLabel.onclick = playStartSound;
   zoomOutButton.onclick = zoomOut;
   zoomInButton.onclick = zoomIn;
+  $("#input_form").submit(startTimerWithoutSubmit);
 
   setDefaultMinutes();
   setDefaultSoundOnOff();
