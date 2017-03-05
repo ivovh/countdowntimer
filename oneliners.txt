@@ -1,0 +1,12 @@
+Useful oneliners in the dev environment
+---------------------------------------
+
+Install new package:
+ $ npm install -S <new-npm-package>
+
+Build locally (target named postinstall due to Heroku)
+ $ npm run postinstall
+
+Launch app locally
+ $ heroku local
+
