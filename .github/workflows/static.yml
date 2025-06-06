@@ -22,45 +22,38 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Build
-      run: |
-        npm install
-        mkdir -p ./public
-        cp -r ./src/* ./public
-        npx webpack
-
   # Single deploy job since we're just deploying
   deploy:
-    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Build
+        run: |
+          npm install
+          mkdir -p ./public
+          cp -r ./src/* ./public
+          npx webpack
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
           path: './public'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
