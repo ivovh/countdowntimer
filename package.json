@@ -7,9 +7,6 @@
     ]
   },
   "description": "A visual timer that counts down",
-  "engines": {
-    "node": "6.11.1"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "scripts/postinstall.sh"
