@@ -1,8 +1,0 @@
-Useful oneliners in the dev environment
----------------------------------------
-
-Install new package:
- $ npm install -S <new-npm-package>
-
-Build locally
- $ npm run postinstall
